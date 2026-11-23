@@ -125,37 +125,32 @@
             The myFT Engagement &amp; Habit Loop
           </h1>
           <p class="text-sm sm:text-base text-ft-muted mt-1">
-            Modeling how topic following, personalized feeds, and event-triggered alerts compound subscriber RFV.
+            Modelling how topic following, personalised feeds, and event-triggered alerts compound subscriber RFV.
           </p>
         </div>
 
-        <!-- Author & Interactive Controls -->
-        <div class="flex flex-wrap items-center gap-2.5">
-          <div class="hidden sm:flex flex-col items-end mr-2 text-right">
+        <!-- Author & Interactive Controls (Single horizontal non-wrapping row for buttons) -->
+        <div class="flex flex-row items-center gap-3 shrink-0">
+          <div class="hidden sm:flex flex-col items-end mr-1 text-right">
             <span class="text-xs font-semibold text-ft-ink">James Webb</span>
             <span class="text-[11px] text-ft-muted">Former Group Product Manager, FT</span>
           </div>
 
-          <button id="btnSimulate" onclick="toggleSimulation()"
-            class="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg bg-ft-teal hover:bg-[#095c64] text-white text-sm font-semibold shadow-sm transition cursor-pointer">
-            <svg id="simIconPlay" class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z"/></svg>
-            <svg id="simIconPause" class="w-4 h-4 hidden" fill="currentColor" viewBox="0 0 20 20"><path d="M5.75 3a.75.75 0 00-.75.75v12.5c0 .414.336.75.75.75h1.5a.75.75 0 00.75-.75V3.75A.75.75 0 007.25 3h-1.5zM12.75 3a.75.75 0 00-.75.75v12.5c0 .414.336.75.75.75h1.5a.75.75 0 00.75-.75V3.75a.75.75 0 00-.75-.75h-1.5z"/></svg>
-            <span id="simBtnLabel">Simulate Loop</span>
-          </button>
+          <div class="flex flex-row flex-nowrap items-center gap-2.5 shrink-0">
+            <button id="btnSimulate" onclick="toggleSimulation()"
+              class="inline-flex flex-row items-center gap-2 px-4 py-2.5 rounded-lg bg-ft-teal hover:bg-[#095c64] text-white text-sm font-semibold shadow-sm transition cursor-pointer whitespace-nowrap shrink-0">
+              <svg id="simIconPlay" class="w-4 h-4 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z"/></svg>
+              <svg id="simIconPause" class="w-4 h-4 hidden shrink-0" fill="currentColor" viewBox="0 0 20 20"><path d="M5.75 3a.75.75 0 00-.75.75v12.5c0 .414.336.75.75.75h1.5a.75.75 0 00.75-.75V3.75A.75.75 0 007.25 3h-1.5zM12.75 3a.75.75 0 00-.75.75v12.5c0 .414.336.75.75.75h1.5a.75.75 0 00.75-.75V3.75a.75.75 0 00-.75-.75h-1.5z"/></svg>
+              <span id="simBtnLabel">Simulate Loop</span>
+            </button>
 
-          <button onclick="stepStage(1)"
-            class="inline-flex items-center gap-1.5 px-3.5 py-2.5 rounded-lg bg-ft-card hover:bg-white border border-ft-borderStrong text-ft-ink text-sm font-medium transition cursor-pointer"
-            title="Advance one stage (or press Right Arrow)">
-            <span>Next Step</span>
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
-          </button>
-<!--
-          <button onclick="toggleShareModal(true)"
-            class="inline-flex items-center gap-1.5 px-3.5 py-2.5 rounded-lg bg-ft-ink hover:bg-neutral-800 text-white text-sm font-medium transition cursor-pointer"
-            title="GitHub Portfolio & README Snippet">
-            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
-            <span class="hidden sm:inline">GitHub Info</span>
-          </button>-->
+            <button onclick="stepStage(1)"
+              class="inline-flex flex-row items-center gap-1.5 px-3.5 py-2.5 rounded-lg bg-ft-card hover:bg-white border border-ft-borderStrong text-ft-ink text-sm font-medium transition cursor-pointer whitespace-nowrap shrink-0"
+              title="Advance one stage (or press Right Arrow)">
+              <span>Next Step</span>
+              <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -182,7 +177,7 @@
         </div>
         <div class="p-3 rounded-xl bg-ft-paper/70 border border-ft-border">
           <div class="font-mono text-xl sm:text-2xl font-bold text-ft-oxford">+3% / +5%</div>
-          <div class="text-xs font-semibold text-ft-ink mt-0.5">Send-Time Optimization</div>
+          <div class="text-xs font-semibold text-ft-ink mt-0.5">Send-Time Optimisation</div>
           <div class="text-[11px] text-ft-muted">Open &amp; CTR gains + smoothed peak load</div>
         </div>
       </div>
@@ -349,7 +344,7 @@
                   <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-blue-50 text-ft-oxford font-semibold">myFT Hub</span>
                 </div>
                 <h3 class="font-serif text-base sm:text-lg font-bold text-ft-ink leading-snug">
-                  Populate Personalized Feed
+                  Populate Personalised Feed
                 </h3>
                 <p class="text-xs text-ft-muted mt-1 leading-relaxed">
                   Following topics dynamically populates a tailored feed of relevant FT journalism &amp; curated collections.
@@ -400,7 +395,7 @@
                   myFT Alerts &amp; Digests
                 </h3>
                 <p class="text-xs text-ft-muted mt-1 leading-relaxed">
-                  Daily, hourly, or instant alerts deliver new stories at send-time-optimized moments for peak open rates.
+                  Daily, hourly, or instant alerts deliver new stories at send-time-optimised moments for peak open rates.
                 </p>
               </div>
               <div class="mt-3 pt-2 border-t border-ft-border/70 flex items-center justify-between text-[11px] font-mono text-ft-muted">
@@ -503,7 +498,7 @@
           <div class="text-xs font-mono uppercase tracking-wider text-ft-claret font-semibold mb-1">01 • Core Insight</div>
           <h3 class="font-serif text-lg font-bold text-ft-ink mb-2">Why the "Mix" Habit Wins</h3>
           <p class="text-sm text-ft-muted leading-relaxed">
-            Behavioral analysis revealed that subscribers who rely exclusively on onsite browsing or exclusively on email digests plateau early. Readers who combine <strong>onsite topic discovery</strong> with <strong>offsite alert re-entry</strong> achieve the highest median RFV (Recency, Frequency, Volume).
+            Behavioural analysis revealed that subscribers who rely exclusively on onsite browsing or exclusively on email digests plateau early. Readers who combine <strong>onsite topic discovery</strong> with <strong>offsite alert re-entry</strong> achieve the highest median RFV (Recency, Frequency, Volume).
           </p>
         </div>
 
@@ -511,7 +506,7 @@
           <div class="text-xs font-mono uppercase tracking-wider text-ft-teal font-semibold mb-1">02 • Solving Alert Fatigue</div>
           <h3 class="font-serif text-lg font-bold text-ft-ink mb-2">Precision Over Volume</h3>
           <p class="text-sm text-ft-muted leading-relaxed">
-            Early cohorts saw 43% of newsletter subscribers receiving 100+ emails in month one. By consolidating legacy Author, Keyword, and B2B alerts into unified myFT digests with <strong>send-time optimization</strong>, we lifted open rates (+3%) and CTR (+5%) while smoothing peak email infrastructure load.
+            Early cohorts saw 43% of newsletter subscribers receiving 100+ emails in month one. By consolidating legacy Author, Keyword, and B2B alerts into unified myFT digests with <strong>send-time optimisation</strong>, we lifted open rates (+3%) and CTR (+5%) while smoothing peak email infrastructure load.
           </p>
         </div>
 
@@ -519,7 +514,7 @@
           <div class="text-xs font-mono uppercase tracking-wider text-ft-oxford font-semibold mb-1">03 • Curation + Algorithms</div>
           <h3 class="font-serif text-lg font-bold text-ft-ink mb-2">Editorial Authority at Scale</h3>
           <p class="text-sm text-ft-muted leading-relaxed">
-            We tested behavioral ("Because you followed..."), popularity, and demographic recommenders alongside human-curated <strong>FT Collections</strong>—which delivered a <strong>+3% engagement uplift</strong> by pairing editorial judgment with personalized topic graphs.
+            We tested behavioural ("Because you followed..."), popularity, and demographic recommenders alongside human-curated <strong>FT Collections</strong>—which delivered a <strong>+3% engagement uplift</strong> by pairing editorial judgement with personalised topic graphs.
           </p>
         </div>
       </div>
@@ -532,63 +527,8 @@
       <div>
         <span class="font-semibold text-ft-ink">myFT Engagement &amp; Habit Loop</span> — Product Strategy Model by <span class="font-semibold text-ft-ink">James Webb</span> (Former Group Product Manager, Financial Times).
       </div>
-      <div class="flex items-center gap-4">
-        <button onclick="toggleShareModal(true)" class="text-ft-claret hover:underline font-medium cursor-pointer">
-          Deploy to GitHub Pages →
-        </button>
-      </div>
     </div>
   </footer>
-
-  <!-- GitHub Portfolio & Deployment Modal -->
-  <div id="shareModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/50 backdrop-blur-xs p-4">
-    <div class="bg-ft-elevated rounded-2xl border border-ft-border max-w-lg w-full p-6 shadow-2xl">
-      <div class="flex items-center justify-between pb-3 border-b border-ft-border">
-        <h3 class="font-serif text-xl font-bold text-ft-ink">Share &amp; Host on GitHub Pages</h3>
-        <button onclick="toggleShareModal(false)" class="p-1.5 rounded-lg hover:bg-ft-paper text-ft-muted hover:text-ft-ink cursor-pointer">
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
-        </button>
-      </div>
-
-      <div class="mt-4 space-y-4 text-sm text-ft-muted">
-        <p>
-          This artifact is built as a <strong class="text-ft-ink">zero-dependency, single-file web application</strong> (`index.html`), ready to publish directly on GitHub Pages or embed in your product leadership portfolio.
-        </p>
-
-        <div class="p-3.5 rounded-xl bg-ft-paper border border-ft-border">
-          <div class="text-xs font-mono font-semibold text-ft-ink mb-1.5">Quick GitHub Setup (3 Steps):</div>
-          <ol class="list-decimal list-inside space-y-1 text-xs text-ft-muted">
-            <li>Create a new public repo (e.g. <code class="font-mono text-ft-claret">myft-engagement-loop</code>).</li>
-            <li>Save this file as <code class="font-mono text-ft-ink">index.html</code> in the root directory.</li>
-            <li>Enable <strong>Settings → Pages → Deploy from branch (main)</strong>.</li>
-          </ol>
-        </div>
-
-        <div>
-          <div class="flex items-center justify-between mb-1">
-            <span class="text-xs font-mono font-semibold text-ft-ink">Suggested README.md Summary</span>
-            <button onclick="copyReadmeSnippet()" id="copyBtn" class="text-xs font-mono text-ft-teal hover:underline font-semibold cursor-pointer">
-              Copy Markdown
-            </button>
-          </div>
-          <textarea id="readmeSnippet" readonly rows="5"
-            class="w-full p-3 rounded-xl bg-ft-paper border border-ft-border font-mono text-xs text-ft-ink focus:outline-none"># myFT Engagement & Habit Loop Model
-
-Interactive product strategy artifact illustrating the 4-stage compounding engagement loop built for **myFT** at the **Financial Times** (Group Product Manager, James Webb).
-
-- **+86% Engagement Lift** (RFV vs. control)
-- **6x Article Reads** referred by myFT alerts vs. onsite sources
-- **+49% Open Rate / +102% uCTR** on event-triggered follow/save onboarding</textarea>
-        </div>
-      </div>
-
-      <div class="mt-5 flex justify-end">
-        <button onclick="toggleShareModal(false)" class="px-4 py-2 rounded-lg bg-ft-ink text-white text-sm font-medium hover:bg-neutral-800 cursor-pointer">
-          Done
-        </button>
-      </div>
-    </div>
-  </div>
 
   <!-- Interactive Logic & State Engine -->
   <script>
@@ -631,7 +571,7 @@ Interactive product strategy artifact illustrating the 4-stage compounding engag
         metricDesc: 'Achieved by replacing generic batch CRM blasts with event-triggered onboarding emails immediately after a reader follows their first topic or saves an article.',
         bullets: [
           '<strong>Jobs-to-be-Done Alignment:</strong> Built around core reader jobs—<em>"Set up ways to be instantly alerted on topics I care about"</em> and <em>"Never feel uninformed in professional discussions."</em>',
-          '<strong>Contextual Friction Reduction:</strong> Embedded one-click <code>+ Follow</code> topic pills directly within article headers and footers rather than hiding customization in account settings.',
+          '<strong>Contextual Friction Reduction:</strong> Embedded one-click <code>+ Follow</code> topic pills directly within article headers and footers rather than hiding customisation in account settings.',
           '<strong>Progressive Profiling:</strong> Each followed topic trains the subscriber’s explicit interest graph, increasing switching costs and personal utility.'
         ],
         channelTag: 'FT.com Article Page'
@@ -639,12 +579,12 @@ Interactive product strategy artifact illustrating the 4-stage compounding engag
       2: {
         badge: 'STAGE 02 • VARIABLE REWARD POOL',
         badgeColor: 'bg-blue-50 text-ft-oxford',
-        title: 'Populate Personalized Feed',
+        title: 'Populate Personalised Feed',
         subtitle: 'Turning explicit topic follows into a living, curated stream of FT journalism.',
         metricValue: '+3% Engagement Uplift (Curated Collections)',
         metricDesc: 'Human-curated FT Collections outperformed purely algorithmic "Because you followed" and demographic modules in controlled feed experiments.',
         bullets: [
-          '<strong>Editorial + Algorithmic Synergy:</strong> Tested behavioral recommendations, popularity signals, and <em>"Topics you’ve fallen behind on"</em> alongside curated FT Collections.',
+          '<strong>Editorial + Algorithmic Synergy:</strong> Tested behavioural recommendations, popularity signals, and <em>"Topics you’ve fallen behind on"</em> alongside curated FT Collections.',
           '<strong>Dedicated Onsite Hub:</strong> Created a scannable, chronological & topic-grouped myFT hub where subscribers can catch up on missed coverage without noise.',
           '<strong>Cross-Topic Discovery:</strong> Surfacing adjacent FT topics inside the feed encourages multi-topic following—a leading indicator of long-term retention.'
         ],
@@ -656,7 +596,7 @@ Interactive product strategy artifact illustrating the 4-stage compounding engag
         title: 'myFT Alerts & Smart Cadence',
         subtitle: 'Delivering timely, high-signal alerts without causing inbox fatigue.',
         metricValue: '+3% Open Rate & +5% CTR Lift',
-        metricDesc: 'Send-time optimization predicted each subscriber’s peak open window while smoothing out outbound email infrastructure spikes.',
+        metricDesc: 'Send-time optimisation predicted each subscriber’s peak open window while smoothing out outbound email infrastructure spikes.',
         bullets: [
           '<strong>Solving Newsletter Overload:</strong> User research showed 43% of newsletter subscribers received 100+ emails in month one. We unified legacy Author, Keyword, and B2B alerts into smart digests.',
           '<strong>User-Controlled Cadence:</strong> Subscribers choose <em>Instant</em>, <em>Hourly</em>, or <em>Daily Digest</em> frequencies per topic to match urgency with workflow.',
@@ -947,35 +887,7 @@ Interactive product strategy artifact illustrating the 4-stage compounding engag
     }
 
     // =========================================================================
-    // 4. MODAL & CLIPBOARD UTILITIES
-    // =========================================================================
-    function toggleShareModal(show) {
-      const modal = document.getElementById('shareModal');
-      if (show) {
-        modal.classList.remove('hidden');
-        modal.classList.add('flex');
-      } else {
-        modal.classList.add('hidden');
-        modal.classList.remove('flex');
-      }
-    }
-
-    function copyReadmeSnippet() {
-      const textarea = document.getElementById('readmeSnippet');
-      textarea.select();
-      textarea.setSelectionRange(0, 99999);
-      try {
-        document.execCommand('copy');
-        const btn = document.getElementById('copyBtn');
-        btn.textContent = 'Copied ✓';
-        setTimeout(() => { btn.textContent = 'Copy Markdown'; }, 2000);
-      } catch (err) {
-        console.error('Copy failed', err);
-      }
-    }
-
-    // =========================================================================
-    // 5. KEYBOARD SHORTCUTS & INITIALIZATION
+    // 4. KEYBOARD SHORTCUTS & INITIALIZATION
     // =========================================================================
     document.addEventListener('keydown', (e) => {
       if (e.target.tagName === 'TEXTAREA' || e.target.tagName === 'INPUT') return;
@@ -986,8 +898,6 @@ Interactive product strategy artifact illustrating the 4-stage compounding engag
       } else if (e.key === ' ') {
         e.preventDefault();
         toggleSimulation();
-      } else if (e.key === 'Escape') {
-        toggleShareModal(false);
       }
     });
 
