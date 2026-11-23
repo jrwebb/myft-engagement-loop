@@ -1,0 +1,999 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The myFT Engagement & Habit Loop — James Webb | Product Case Study</title>
+
+  <!-- Editorial Typography: Playfair Display (FT-inspired serif), Inter (clean UI sans), JetBrains Mono (metrics) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&display=swap" rel="stylesheet" />
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            ft: {
+              paper: '#FFF1E5',
+              card: '#FFF9F5',
+              elevated: '#FFFFFF',
+              ink: '#1A1A1A',
+              muted: '#5A5550',
+              border: '#E6D9CE',
+              borderStrong: '#D2C0B0',
+              claret: '#990F3D',
+              claretDark: '#7A0C31',
+              teal: '#0D7680',
+              tealLight: '#E6F2F3',
+              oxford: '#0F5499',
+              mandarin: '#FF8833',
+              slate: '#262A33'
+            }
+          },
+          fontFamily: {
+            serif: ['"Playfair Display"', 'Georgia', 'serif'],
+            sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace']
+          }
+        }
+      }
+    };
+  </script>
+
+  <style>
+    /* Custom FT Editorial Styling & Loop Animations */
+    body {
+      background-color: #FFF1E5;
+      color: #1A1A1A;
+      font-family: 'Inter', system-ui, sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Subtle newsprint texture overlay */
+    .ft-paper-grain {
+      background-image: radial-gradient(rgba(26, 26, 26, 0.03) 1px, transparent 0);
+      background-size: 20px 20px;
+    }
+
+    /* Animated flow dash for active loop connectors */
+    @keyframes flowDash {
+      to {
+        stroke-dashoffset: -24;
+      }
+    }
+
+    .loop-path-active {
+      stroke-dasharray: 8 4;
+      animation: flowDash 0.9s linear infinite;
+    }
+
+    /* Stage card active glow & transition */
+    .stage-card {
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .stage-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px -5px rgba(26, 26, 26, 0.08);
+    }
+    .stage-card.active {
+      border-color: #0D7680;
+      background-color: #FFFFFF;
+      box-shadow: 0 12px 28px -6px rgba(13, 118, 128, 0.18), 0 0 0 2px #0D7680;
+    }
+
+    /* Pulse ring for active simulation packet */
+    @keyframes packetPulse {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.35); opacity: 0.75; }
+    }
+    .packet-dot {
+      transform-origin: center;
+      transform-box: fill-box;
+      animation: packetPulse 1.2s ease-in-out infinite;
+    }
+
+    /* Custom scrollbar */
+    ::-webkit-scrollbar { width: 8px; height: 8px; }
+    ::-webkit-scrollbar-track { background: #FFF1E5; }
+    ::-webkit-scrollbar-thumb { background: #D2C0B0; border-radius: 9999px; }
+    ::-webkit-scrollbar-thumb:hover { background: #990F3D; }
+  </style>
+</head>
+<body class="ft-paper-grain min-h-screen flex flex-col">
+
+  <!-- Top FT Claret Accent Bar -->
+  <div class="h-1.5 w-full bg-ft-claret"></div>
+
+  <!-- Editorial Masthead -->
+  <header class="border-b border-ft-border bg-ft-paper/95 backdrop-blur-sm sticky top-0 z-30">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+      <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+        <!-- Brand & Title -->
+        <div>
+          <div class="flex flex-wrap items-center gap-2 text-xs font-mono uppercase tracking-widest text-ft-claret font-semibold mb-1">
+            <span>Product Strategy Case Study</span>
+            <span class="text-ft-borderStrong">•</span>
+            <span>Financial Times</span>
+            <span class="text-ft-borderStrong">•</span>
+            <span class="bg-ft-claret text-white px-1.5 py-0.5 rounded text-[10px]">myFT</span>
+          </div>
+          <h1 class="font-serif text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight text-ft-ink leading-tight">
+            The myFT Engagement &amp; Habit Loop
+          </h1>
+          <p class="text-sm sm:text-base text-ft-muted mt-1">
+            Modeling how topic following, personalized feeds, and event-triggered alerts compound subscriber RFV.
+          </p>
+        </div>
+
+        <!-- Author & Interactive Controls -->
+        <div class="flex flex-wrap items-center gap-2.5">
+          <div class="hidden sm:flex flex-col items-end mr-2 text-right">
+            <span class="text-xs font-semibold text-ft-ink">James Webb</span>
+            <span class="text-[11px] text-ft-muted">Former Group Product Manager, FT</span>
+          </div>
+
+          <button id="btnSimulate" onclick="toggleSimulation()"
+            class="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg bg-ft-teal hover:bg-[#095c64] text-white text-sm font-semibold shadow-sm transition cursor-pointer">
+            <svg id="simIconPlay" class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z"/></svg>
+            <svg id="simIconPause" class="w-4 h-4 hidden" fill="currentColor" viewBox="0 0 20 20"><path d="M5.75 3a.75.75 0 00-.75.75v12.5c0 .414.336.75.75.75h1.5a.75.75 0 00.75-.75V3.75A.75.75 0 007.25 3h-1.5zM12.75 3a.75.75 0 00-.75.75v12.5c0 .414.336.75.75.75h1.5a.75.75 0 00.75-.75V3.75a.75.75 0 00-.75-.75h-1.5z"/></svg>
+            <span id="simBtnLabel">Simulate Loop</span>
+          </button>
+
+          <button onclick="stepStage(1)"
+            class="inline-flex items-center gap-1.5 px-3.5 py-2.5 rounded-lg bg-ft-card hover:bg-white border border-ft-borderStrong text-ft-ink text-sm font-medium transition cursor-pointer"
+            title="Advance one stage (or press Right Arrow)">
+            <span>Next Step</span>
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+          </button>
+
+          <button onclick="toggleShareModal(true)"
+            class="inline-flex items-center gap-1.5 px-3.5 py-2.5 rounded-lg bg-ft-ink hover:bg-neutral-800 text-white text-sm font-medium transition cursor-pointer"
+            title="GitHub Portfolio & README Snippet">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+            <span class="hidden sm:inline">GitHub Info</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Verified Case Study KPI Strip -->
+  <section class="border-b border-ft-border bg-ft-card">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="p-3 rounded-xl bg-ft-paper/70 border border-ft-border">
+          <div class="font-mono text-xl sm:text-2xl font-bold text-ft-claret">+86%</div>
+          <div class="text-xs font-semibold text-ft-ink mt-0.5">Subscriber Engagement Lift</div>
+          <div class="text-[11px] text-ft-muted">RFV impact vs. non-myFT control group</div>
+        </div>
+        <div class="p-3 rounded-xl bg-ft-paper/70 border border-ft-border">
+          <div class="font-mono text-xl sm:text-2xl font-bold text-ft-teal">6x Reads</div>
+          <div class="text-xs font-semibold text-ft-ink mt-0.5">Offsite Alert Referral Power</div>
+          <div class="text-[11px] text-ft-muted">Referred by myFT emails vs. onsite sources</div>
+        </div>
+        <div class="p-3 rounded-xl bg-ft-paper/70 border border-ft-border">
+          <div class="font-mono text-xl sm:text-2xl font-bold text-ft-ink">+49% / +102%</div>
+          <div class="text-xs font-semibold text-ft-ink mt-0.5">Open Rate &amp; uCTR Uplift</div>
+          <div class="text-[11px] text-ft-muted">Event-triggered follow/save onboarding emails</div>
+        </div>
+        <div class="p-3 rounded-xl bg-ft-paper/70 border border-ft-border">
+          <div class="font-mono text-xl sm:text-2xl font-bold text-ft-oxford">+3% / +5%</div>
+          <div class="text-xs font-semibold text-ft-ink mt-0.5">Send-Time Optimization</div>
+          <div class="text-[11px] text-ft-muted">Open &amp; CTR gains + smoothed peak load</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Main Interactive Workspace -->
+  <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 lg:py-8">
+
+    <!-- Habit Cohort & Topic Selector Bar -->
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6 p-4 rounded-2xl bg-ft-card border border-ft-border shadow-sm">
+      <!-- Cohort Mode Switcher -->
+      <div class="flex flex-wrap items-center gap-2">
+        <span class="text-xs font-mono uppercase tracking-wider text-ft-muted font-semibold mr-1">Subscriber Habit Cohort:</span>
+        <div class="inline-flex rounded-xl bg-ft-paper p-1 border border-ft-border" role="group">
+          <button onclick="setCohort('mix')" id="cohort-mix"
+            class="cohort-btn px-3 py-1.5 rounded-lg text-xs font-semibold transition cursor-pointer bg-ft-ink text-white shadow-sm">
+            Mix Habit (Onsite + Offsite)
+          </button>
+          <button onclick="setCohort('offsite')" id="cohort-offsite"
+            class="cohort-btn px-3 py-1.5 rounded-lg text-xs font-semibold transition cursor-pointer text-ft-muted hover:text-ft-ink">
+            Offsite Alerts Only
+          </button>
+          <button onclick="setCohort('onsite')" id="cohort-onsite"
+            class="cohort-btn px-3 py-1.5 rounded-lg text-xs font-semibold transition cursor-pointer text-ft-muted hover:text-ft-ink">
+            Onsite Hub Only
+          </button>
+        </div>
+      </div>
+
+      <!-- Interactive Topic Follow Sandbox -->
+      <div class="flex flex-wrap items-center gap-2">
+        <span class="text-xs font-mono uppercase tracking-wider text-ft-muted font-semibold">Test Topic:</span>
+        <div class="flex flex-wrap gap-1.5" id="topicPills">
+          <button onclick="selectTopic('Global Inflation')" data-topic="Global Inflation"
+            class="topic-pill px-3 py-1 rounded-full text-xs font-medium border transition cursor-pointer bg-ft-teal text-white border-ft-teal">
+            ✓ Global Inflation
+          </button>
+          <button onclick="selectTopic('Artificial Intelligence')" data-topic="Artificial Intelligence"
+            class="topic-pill px-3 py-1 rounded-full text-xs font-medium border transition cursor-pointer bg-white text-ft-ink border-ft-borderStrong hover:border-ft-teal">
+            + Artificial Intelligence
+          </button>
+          <button onclick="selectTopic('Central Banks')" data-topic="Central Banks"
+            class="topic-pill px-3 py-1 rounded-full text-xs font-medium border transition cursor-pointer bg-white text-ft-ink border-ft-borderStrong hover:border-ft-teal">
+            + Central Banks
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Cohort Insight Banner -->
+    <div id="cohortBanner" class="mb-6 px-4 py-3 rounded-xl bg-ft-tealLight border border-ft-teal/30 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-sm">
+      <div class="flex items-start sm:items-center gap-2.5">
+        <span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-ft-teal text-white font-mono text-xs font-bold shrink-0 mt-0.5 sm:mt-0">★</span>
+        <p id="cohortDescription" class="text-ft-ink">
+          <strong>"Mix" Habit Loop (Highest Median RFV):</strong> Subscribers discover and follow topics on article pages (Onsite), receive event-triggered alerts when news breaks (Offsite), and click back into FT articles where they follow adjacent topics—compounding engagement.
+        </p>
+      </div>
+      <span id="cohortRfvBadge" class="font-mono text-xs font-semibold px-2.5 py-1 rounded-md bg-white text-ft-teal border border-ft-teal/30 shrink-0 self-start sm:self-center">
+        Median RFV: Peak (1.0x Benchmark)
+      </span>
+    </div>
+
+    <!-- 12-Column Grid: Left 7 Cols = Interactive 4-Stage Habit Loop Diagram; Right 5 Cols = Deep Strategy & Live Preview -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+
+      <!-- LEFT COLUMN: Interactive 4-Stage Flywheel Diagram -->
+      <div class="lg:col-span-7 bg-ft-card rounded-2xl border border-ft-border p-4 sm:p-6 shadow-sm relative overflow-hidden">
+        <div class="flex items-center justify-between mb-4">
+          <div>
+            <h2 class="font-serif text-xl font-bold text-ft-ink">The 4-Stage Compounding Loop</h2>
+            <p class="text-xs text-ft-muted">Click any stage to inspect product strategy, user psychology &amp; FT metrics</p>
+          </div>
+          <span class="text-[11px] font-mono text-ft-muted bg-ft-paper px-2.5 py-1 rounded-md border border-ft-border">
+            Keys: ← / → / Space
+          </span>
+        </div>
+
+        <!-- Visual Loop Container -->
+        <div class="relative w-full">
+          <!-- Central SVG Loop Connectors (Visible on sm+ screens for crisp quadrant flywheel) -->
+          <svg id="loopSvg" viewBox="0 0 600 520" class="hidden sm:block w-full h-auto pointer-events-none select-none" aria-hidden="true">
+            <defs>
+              <!-- Arrowhead markers -->
+              <marker id="arrow-muted" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                <path d="M 0 1 L 10 5 L 0 9 z" fill="#B8A696" />
+              </marker>
+              <marker id="arrow-active" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                <path d="M 0 1 L 10 5 L 0 9 z" fill="#0D7680" />
+              </marker>
+              <marker id="arrow-claret" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                <path d="M 0 1 L 10 5 L 0 9 z" fill="#990F3D" />
+              </marker>
+            </defs>
+
+            <!-- Subtle Center Flywheel Ring -->
+            <circle cx="300" cy="260" r="145" fill="none" stroke="#E6D9CE" stroke-width="1.5" stroke-dasharray="4 4" />
+            <circle cx="300" cy="260" r="78" fill="#FFF1E5" stroke="#E6D9CE" stroke-width="1.5" />
+
+            <!-- Connector 1 -> 2 (Top Left to Top Right) -->
+            <path id="path-1-2" d="M 245 92 Q 300 68 355 92" fill="none" stroke="#B8A696" stroke-width="2.5" marker-end="url(#arrow-muted)" />
+            <!-- Connector 2 -> 3 (Top Right to Bottom Right) -->
+            <path id="path-2-3" d="M 485 195 Q 515 260 485 325" fill="none" stroke="#B8A696" stroke-width="2.5" marker-end="url(#arrow-muted)" />
+            <!-- Connector 3 -> 4 (Bottom Right to Bottom Left) -->
+            <path id="path-3-4" d="M 355 428 Q 300 452 245 428" fill="none" stroke="#B8A696" stroke-width="2.5" marker-end="url(#arrow-muted)" />
+            <!-- Connector 4 -> 1 (Bottom Left to Top Left - Compounding Reinforcing Loop) -->
+            <path id="path-4-1" d="M 115 325 Q 85 260 115 195" fill="none" stroke="#990F3D" stroke-width="2.5" marker-end="url(#arrow-claret)" />
+
+            <!-- Center Hub Label -->
+            <text x="300" y="246" text-anchor="middle" fill="#990F3D" font-family="JetBrains Mono, monospace" font-size="10" font-weight="700" letter-spacing="1.2">HABIT ENGINE</text>
+            <text x="300" y="266" text-anchor="middle" fill="#1A1A1A" font-family="Playfair Display, Georgia, serif" font-size="15" font-weight="700">Onsite + Offsite</text>
+            <text x="300" y="284" text-anchor="middle" fill="#5A5550" font-family="Inter, sans-serif" font-size="11" font-weight="500">+86% RFV Lift</text>
+
+            <!-- Directional Channel Badges along paths -->
+            <rect x="256" y="54" width="88" height="20" rx="10" fill="#FFF9F5" stroke="#E6D9CE" />
+            <text x="300" y="67" text-anchor="middle" fill="#5A5550" font-family="JetBrains Mono, monospace" font-size="9" font-weight="600">ONSITE CURATION</text>
+
+            <rect x="252" y="446" width="96" height="20" rx="10" fill="#FFF9F5" stroke="#E6D9CE" />
+            <text x="300" y="459" text-anchor="middle" fill="#5A5550" font-family="JetBrains Mono, monospace" font-size="9" font-weight="600">6x READ REFERRAL</text>
+
+            <!-- Traveling Simulation Packet Dot -->
+            <g id="simPacket" class="hidden">
+              <circle id="simPacketOuter" cx="140" cy="120" r="11" fill="#0D7680" fill-opacity="0.25" class="packet-dot" />
+              <circle id="simPacketInner" cx="140" cy="120" r="5.5" fill="#0D7680" stroke="#FFFFFF" stroke-width="1.5" />
+            </g>
+          </svg>
+
+          <!-- Interactive 2x2 Quadrant Cards Overlay (Positioned over SVG on sm+, stacked cleanly on mobile) -->
+          <div class="sm:absolute sm:inset-0 grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-x-16 sm:gap-y-24 sm:p-2 pointer-events-none">
+
+            <!-- STAGE 1: Top-Left -->
+            <button onclick="selectStage(1)" id="card-stage-1"
+              class="stage-card active pointer-events-auto text-left p-4 rounded-xl bg-ft-paper border border-ft-border flex flex-col justify-between cursor-pointer">
+              <div>
+                <div class="flex items-center justify-between gap-2 mb-1.5">
+                  <span class="inline-flex items-center gap-1.5 text-[11px] font-mono font-bold uppercase tracking-wider text-ft-teal">
+                    <span class="w-5 h-5 rounded-full bg-ft-teal text-white inline-flex items-center justify-center text-[11px]">1</span>
+                    Investment • Onsite
+                  </span>
+                  <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-ft-tealLight text-ft-teal font-semibold">+ Follow</span>
+                </div>
+                <h3 class="font-serif text-base sm:text-lg font-bold text-ft-ink leading-snug">
+                  Follow Topic on Article Page
+                </h3>
+                <p class="text-xs text-ft-muted mt-1 leading-relaxed">
+                  Reader clicks <span class="font-semibold text-ft-ink">+ Follow</span> directly on an FT article tag (e.g., <span id="cardTopicLabel" class="underline decoration-ft-teal">Global Inflation</span>).
+                </p>
+              </div>
+              <div class="mt-3 pt-2 border-t border-ft-border/70 flex items-center justify-between text-[11px] font-mono text-ft-muted">
+                <span>Hook: User Investment</span>
+                <span class="text-ft-teal font-semibold">Inspect →</span>
+              </div>
+            </button>
+
+            <!-- STAGE 2: Top-Right -->
+            <button onclick="selectStage(2)" id="card-stage-2"
+              class="stage-card pointer-events-auto text-left p-4 rounded-xl bg-ft-paper border border-ft-border flex flex-col justify-between cursor-pointer">
+              <div>
+                <div class="flex items-center justify-between gap-2 mb-1.5">
+                  <span class="inline-flex items-center gap-1.5 text-[11px] font-mono font-bold uppercase tracking-wider text-ft-oxford">
+                    <span class="w-5 h-5 rounded-full bg-ft-oxford text-white inline-flex items-center justify-center text-[11px]">2</span>
+                    Variable Pool • Onsite
+                  </span>
+                  <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-blue-50 text-ft-oxford font-semibold">myFT Hub</span>
+                </div>
+                <h3 class="font-serif text-base sm:text-lg font-bold text-ft-ink leading-snug">
+                  Populate Personalized Feed
+                </h3>
+                <p class="text-xs text-ft-muted mt-1 leading-relaxed">
+                  Following topics dynamically populates a tailored feed of relevant FT journalism &amp; curated collections.
+                </p>
+              </div>
+              <div class="mt-3 pt-2 border-t border-ft-border/70 flex items-center justify-between text-[11px] font-mono text-ft-muted">
+                <span>Hook: Variable Reward</span>
+                <span class="text-ft-oxford font-semibold">Inspect →</span>
+              </div>
+            </button>
+
+            <!-- STAGE 4: Bottom-Left (Placed 3rd in DOM for 2x2 grid order: Top-L=1, Top-R=2, Bot-L=4, Bot-R=3) -->
+            <button onclick="selectStage(4)" id="card-stage-4"
+              class="stage-card order-4 sm:order-3 pointer-events-auto text-left p-4 rounded-xl bg-ft-paper border border-ft-border flex flex-col justify-between cursor-pointer">
+              <div>
+                <div class="flex items-center justify-between gap-2 mb-1.5">
+                  <span class="inline-flex items-center gap-1.5 text-[11px] font-mono font-bold uppercase tracking-wider text-ft-claret">
+                    <span class="w-5 h-5 rounded-full bg-ft-claret text-white inline-flex items-center justify-center text-[11px]">4</span>
+                    Action &amp; Loop • Bridge
+                  </span>
+                  <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-rose-50 text-ft-claret font-semibold">6x Reads</span>
+                </div>
+                <h3 class="font-serif text-base sm:text-lg font-bold text-ft-ink leading-snug">
+                  Open Alert &amp; Read Article
+                </h3>
+                <p class="text-xs text-ft-muted mt-1 leading-relaxed">
+                  Subscriber clicks alert to read on FT.com—landing back on an article page to follow new topics.
+                </p>
+              </div>
+              <div class="mt-3 pt-2 border-t border-ft-border/70 flex items-center justify-between text-[11px] font-mono text-ft-muted">
+                <span>Hook: Action → Re-invest</span>
+                <span class="text-ft-claret font-semibold">Inspect →</span>
+              </div>
+            </button>
+
+            <!-- STAGE 3: Bottom-Right -->
+            <button onclick="selectStage(3)" id="card-stage-3"
+              class="stage-card order-3 sm:order-4 pointer-events-auto text-left p-4 rounded-xl bg-ft-paper border border-ft-border flex flex-col justify-between cursor-pointer">
+              <div>
+                <div class="flex items-center justify-between gap-2 mb-1.5">
+                  <span class="inline-flex items-center gap-1.5 text-[11px] font-mono font-bold uppercase tracking-wider text-amber-700">
+                    <span class="w-5 h-5 rounded-full bg-amber-600 text-white inline-flex items-center justify-center text-[11px]">3</span>
+                    External Trigger • Offsite
+                  </span>
+                  <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-amber-50 text-amber-800 font-semibold">Smart Cadence</span>
+                </div>
+                <h3 class="font-serif text-base sm:text-lg font-bold text-ft-ink leading-snug">
+                  myFT Alerts &amp; Digests
+                </h3>
+                <p class="text-xs text-ft-muted mt-1 leading-relaxed">
+                  Daily, hourly, or instant alerts deliver new stories at send-time-optimized moments for peak open rates.
+                </p>
+              </div>
+              <div class="mt-3 pt-2 border-t border-ft-border/70 flex items-center justify-between text-[11px] font-mono text-ft-muted">
+                <span>Hook: External Trigger</span>
+                <span class="text-amber-700 font-semibold">Inspect →</span>
+              </div>
+            </button>
+
+          </div>
+        </div>
+
+        <!-- Loop Legend Footer -->
+        <div class="mt-4 pt-3 border-t border-ft-border flex flex-wrap items-center justify-between gap-2 text-xs text-ft-muted">
+          <div class="flex items-center gap-4">
+            <span class="inline-flex items-center gap-1.5">
+              <span class="w-3 h-0.5 bg-ft-teal inline-block"></span> Active Progression
+            </span>
+            <span class="inline-flex items-center gap-1.5">
+              <span class="w-3 h-0.5 bg-ft-claret inline-block"></span> Reinforcing Loop (Stage 4 → 1)
+            </span>
+          </div>
+          <span id="simStatusText" class="font-mono text-[11px] text-ft-teal font-semibold">
+            Viewing Stage 1 of 4
+          </span>
+        </div>
+      </div>
+
+      <!-- RIGHT COLUMN: Deep Product Strategy Inspector & Live Subscriber Experience Mockup -->
+      <div class="lg:col-span-5 flex flex-col gap-6">
+
+        <!-- Deep Strategy Card -->
+        <article class="bg-ft-elevated rounded-2xl border border-ft-border p-5 sm:p-6 shadow-sm">
+          <div class="flex items-center justify-between gap-2 mb-3">
+            <span id="detailBadge" class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-mono font-semibold bg-ft-tealLight text-ft-teal">
+              STAGE 01 • USER INVESTMENT
+            </span>
+            <div class="flex items-center gap-1">
+              <button onclick="stepStage(-1)" class="p-1.5 rounded-lg hover:bg-ft-paper text-ft-muted hover:text-ft-ink transition cursor-pointer" title="Previous Stage">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+              </button>
+              <button onclick="stepStage(1)" class="p-1.5 rounded-lg hover:bg-ft-paper text-ft-muted hover:text-ft-ink transition cursor-pointer" title="Next Stage">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+              </button>
+            </div>
+          </div>
+
+          <h2 id="detailTitle" class="font-serif text-2xl font-bold text-ft-ink leading-snug">
+            Follow Topic on Article Page
+          </h2>
+          <p id="detailSubtitle" class="text-sm text-ft-muted mt-1.5 leading-relaxed">
+            Capturing explicit subscriber intent in the moment of highest editorial relevance.
+          </p>
+
+          <!-- Key Metrics Callout Box -->
+          <div id="detailMetricBox" class="mt-4 p-3.5 rounded-xl bg-ft-paper border border-ft-border">
+            <div class="text-[11px] font-mono uppercase tracking-wider text-ft-claret font-semibold">Empirical FT Impact</div>
+            <div id="detailMetricValue" class="font-serif text-lg font-bold text-ft-ink mt-0.5">
+              +49% Open Rate &amp; +102% uCTR
+            </div>
+            <div id="detailMetricDesc" class="text-xs text-ft-muted mt-0.5">
+              Driven by event-triggered onboarding emails immediately after a subscriber's first topic follow or article save vs. CRM benchmark.
+            </div>
+          </div>
+
+          <!-- Product Decisions & Learnings List -->
+          <div class="mt-5">
+            <h3 class="text-xs font-mono uppercase tracking-wider text-ft-muted font-semibold mb-2.5">
+              Product Strategy &amp; Execution Learnings
+            </h3>
+            <ul id="detailBullets" class="space-y-2.5 text-sm text-ft-ink">
+              <!-- Populated dynamically by JS -->
+            </ul>
+          </div>
+        </article>
+
+        <!-- Live Subscriber Experience Preview (Changes dynamically per stage & selected topic) -->
+        <div class="bg-ft-card rounded-2xl border border-ft-border p-5 shadow-sm">
+          <div class="flex items-center justify-between mb-3">
+            <span class="text-xs font-mono uppercase tracking-wider text-ft-muted font-semibold">
+              Live FT Product Touchpoint Preview
+            </span>
+            <span id="previewChannelTag" class="text-[11px] font-mono px-2 py-0.5 rounded bg-ft-paper border border-ft-border text-ft-ink">
+              FT.com Article UI
+            </span>
+          </div>
+
+          <!-- Dynamic Mockup Container -->
+          <div id="livePreviewContainer" class="rounded-xl bg-white border border-ft-border p-4 shadow-inner">
+            <!-- Populated dynamically by JS -->
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Bottom Architecture & Case Study Narrative Footer -->
+    <section class="mt-10 pt-8 border-t border-ft-border">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="p-5 rounded-2xl bg-ft-card border border-ft-border">
+          <div class="text-xs font-mono uppercase tracking-wider text-ft-claret font-semibold mb-1">01 • Core Insight</div>
+          <h3 class="font-serif text-lg font-bold text-ft-ink mb-2">Why the "Mix" Habit Wins</h3>
+          <p class="text-sm text-ft-muted leading-relaxed">
+            Behavioral analysis revealed that subscribers who rely exclusively on onsite browsing or exclusively on email digests plateau early. Readers who combine <strong>onsite topic discovery</strong> with <strong>offsite alert re-entry</strong> achieve the highest median RFV (Recency, Frequency, Volume).
+          </p>
+        </div>
+
+        <div class="p-5 rounded-2xl bg-ft-card border border-ft-border">
+          <div class="text-xs font-mono uppercase tracking-wider text-ft-teal font-semibold mb-1">02 • Solving Alert Fatigue</div>
+          <h3 class="font-serif text-lg font-bold text-ft-ink mb-2">Precision Over Volume</h3>
+          <p class="text-sm text-ft-muted leading-relaxed">
+            Early cohorts saw 43% of newsletter subscribers receiving 100+ emails in month one. By consolidating legacy Author, Keyword, and B2B alerts into unified myFT digests with <strong>send-time optimization</strong>, we lifted open rates (+3%) and CTR (+5%) while smoothing peak email infrastructure load.
+          </p>
+        </div>
+
+        <div class="p-5 rounded-2xl bg-ft-card border border-ft-border">
+          <div class="text-xs font-mono uppercase tracking-wider text-ft-oxford font-semibold mb-1">03 • Curation + Algorithms</div>
+          <h3 class="font-serif text-lg font-bold text-ft-ink mb-2">Editorial Authority at Scale</h3>
+          <p class="text-sm text-ft-muted leading-relaxed">
+            We tested behavioral ("Because you followed..."), popularity, and demographic recommenders alongside human-curated <strong>FT Collections</strong>—which delivered a <strong>+3% engagement uplift</strong> by pairing editorial judgment with personalized topic graphs.
+          </p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="border-t border-ft-border bg-ft-card mt-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-ft-muted">
+      <div>
+        <span class="font-semibold text-ft-ink">myFT Engagement &amp; Habit Loop</span> — Product Strategy Model by <span class="font-semibold text-ft-ink">James Webb</span> (Former Group Product Manager, Financial Times).
+      </div>
+      <div class="flex items-center gap-4">
+        <button onclick="toggleShareModal(true)" class="text-ft-claret hover:underline font-medium cursor-pointer">
+          Deploy to GitHub Pages →
+        </button>
+      </div>
+    </div>
+  </footer>
+
+  <!-- GitHub Portfolio & Deployment Modal -->
+  <div id="shareModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/50 backdrop-blur-xs p-4">
+    <div class="bg-ft-elevated rounded-2xl border border-ft-border max-w-lg w-full p-6 shadow-2xl">
+      <div class="flex items-center justify-between pb-3 border-b border-ft-border">
+        <h3 class="font-serif text-xl font-bold text-ft-ink">Share &amp; Host on GitHub Pages</h3>
+        <button onclick="toggleShareModal(false)" class="p-1.5 rounded-lg hover:bg-ft-paper text-ft-muted hover:text-ft-ink cursor-pointer">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
+
+      <div class="mt-4 space-y-4 text-sm text-ft-muted">
+        <p>
+          This artifact is built as a <strong class="text-ft-ink">zero-dependency, single-file web application</strong> (`index.html`), ready to publish directly on GitHub Pages or embed in your product leadership portfolio.
+        </p>
+
+        <div class="p-3.5 rounded-xl bg-ft-paper border border-ft-border">
+          <div class="text-xs font-mono font-semibold text-ft-ink mb-1.5">Quick GitHub Setup (3 Steps):</div>
+          <ol class="list-decimal list-inside space-y-1 text-xs text-ft-muted">
+            <li>Create a new public repo (e.g. <code class="font-mono text-ft-claret">myft-engagement-loop</code>).</li>
+            <li>Save this file as <code class="font-mono text-ft-ink">index.html</code> in the root directory.</li>
+            <li>Enable <strong>Settings → Pages → Deploy from branch (main)</strong>.</li>
+          </ol>
+        </div>
+
+        <div>
+          <div class="flex items-center justify-between mb-1">
+            <span class="text-xs font-mono font-semibold text-ft-ink">Suggested README.md Summary</span>
+            <button onclick="copyReadmeSnippet()" id="copyBtn" class="text-xs font-mono text-ft-teal hover:underline font-semibold cursor-pointer">
+              Copy Markdown
+            </button>
+          </div>
+          <textarea id="readmeSnippet" readonly rows="5"
+            class="w-full p-3 rounded-xl bg-ft-paper border border-ft-border font-mono text-xs text-ft-ink focus:outline-none"># myFT Engagement & Habit Loop Model
+
+Interactive product strategy artifact illustrating the 4-stage compounding engagement loop built for **myFT** at the **Financial Times** (Group Product Manager, James Webb).
+
+- **+86% Engagement Lift** (RFV vs. control)
+- **6x Article Reads** referred by myFT alerts vs. onsite sources
+- **+49% Open Rate / +102% uCTR** on event-triggered follow/save onboarding</textarea>
+        </div>
+      </div>
+
+      <div class="mt-5 flex justify-end">
+        <button onclick="toggleShareModal(false)" class="px-4 py-2 rounded-lg bg-ft-ink text-white text-sm font-medium hover:bg-neutral-800 cursor-pointer">
+          Done
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Interactive Logic & State Engine -->
+  <script>
+    // =========================================================================
+    // 1. STATE & CASE STUDY DATA MODEL
+    // =========================================================================
+    const state = {
+      activeStage: 1,
+      selectedTopic: 'Global Inflation',
+      cohort: 'mix', // 'mix' | 'offsite' | 'onsite'
+      isSimulating: false,
+      simTimer: null
+    };
+
+    const cohortData = {
+      mix: {
+        description: '<strong>"Mix" Habit Loop (Highest Median RFV):</strong> Subscribers discover and follow topics on article pages (Onsite), receive event-triggered alerts when news breaks (Offsite), and click back into FT articles where they follow adjacent topics—compounding engagement.',
+        badge: 'Median RFV: Peak (1.0x Benchmark)',
+        activePaths: ['path-1-2', 'path-2-3', 'path-3-4', 'path-4-1']
+      },
+      offsite: {
+        description: '<strong>Offsite Alerts Only:</strong> Subscribers rely primarily on daily/instant myFT email digests. High read referral volume (6x onsite), but lower organic topic expansion unless pulled back into interactive onsite article discovery.',
+        badge: 'Median RFV: Strong (Offsite-Driven)',
+        activePaths: ['path-2-3', 'path-3-4']
+      },
+      onsite: {
+        description: '<strong>Onsite Hub Only:</strong> Subscribers browse their personalized myFT feed when visiting FT.com directly, without email/push re-engagement triggers—resulting in lower visit frequency than "Mix" habit users.',
+        badge: 'Median RFV: Moderate (Lower Recency)',
+        activePaths: ['path-1-2']
+      }
+    };
+
+    const stageDetails = {
+      1: {
+        badge: 'STAGE 01 • USER INVESTMENT',
+        badgeColor: 'bg-ft-tealLight text-ft-teal',
+        title: 'Follow Topic on Article Page',
+        subtitle: 'Capturing explicit subscriber intent at the peak of reading engagement.',
+        metricValue: '+49% Open Rate & +102% uCTR',
+        metricDesc: 'Achieved by replacing generic batch CRM blasts with event-triggered onboarding emails immediately after a reader follows their first topic or saves an article.',
+        bullets: [
+          '<strong>Jobs-to-be-Done Alignment:</strong> Built around core reader jobs—<em>"Set up ways to be instantly alerted on topics I care about"</em> and <em>"Never feel uninformed in professional discussions."</em>',
+          '<strong>Contextual Friction Reduction:</strong> Embedded one-click <code>+ Follow</code> topic pills directly within article headers and footers rather than hiding customization in account settings.',
+          '<strong>Progressive Profiling:</strong> Each followed topic trains the subscriber’s explicit interest graph, increasing switching costs and personal utility.'
+        ],
+        channelTag: 'FT.com Article Page'
+      },
+      2: {
+        badge: 'STAGE 02 • VARIABLE REWARD POOL',
+        badgeColor: 'bg-blue-50 text-ft-oxford',
+        title: 'Populate Personalized Feed',
+        subtitle: 'Turning explicit topic follows into a living, curated stream of FT journalism.',
+        metricValue: '+3% Engagement Uplift (Curated Collections)',
+        metricDesc: 'Human-curated FT Collections outperformed purely algorithmic "Because you followed" and demographic modules in controlled feed experiments.',
+        bullets: [
+          '<strong>Editorial + Algorithmic Synergy:</strong> Tested behavioral recommendations, popularity signals, and <em>"Topics you’ve fallen behind on"</em> alongside curated FT Collections.',
+          '<strong>Dedicated Onsite Hub:</strong> Created a scannable, chronological & topic-grouped myFT hub where subscribers can catch up on missed coverage without noise.',
+          '<strong>Cross-Topic Discovery:</strong> Surfacing adjacent FT topics inside the feed encourages multi-topic following—a leading indicator of long-term retention.'
+        ],
+        channelTag: 'Onsite myFT Hub'
+      },
+      3: {
+        badge: 'STAGE 03 • EXTERNAL TRIGGER',
+        badgeColor: 'bg-amber-50 text-amber-800',
+        title: 'myFT Alerts & Smart Cadence',
+        subtitle: 'Delivering timely, high-signal alerts without causing inbox fatigue.',
+        metricValue: '+3% Open Rate & +5% CTR Lift',
+        metricDesc: 'Send-time optimization predicted each subscriber’s peak open window while smoothing out outbound email infrastructure spikes.',
+        bullets: [
+          '<strong>Solving Newsletter Overload:</strong> User research showed 43% of newsletter subscribers received 100+ emails in month one. We unified legacy Author, Keyword, and B2B alerts into smart digests.',
+          '<strong>User-Controlled Cadence:</strong> Subscribers choose <em>Instant</em>, <em>Hourly</em>, or <em>Daily Digest</em> frequencies per topic to match urgency with workflow.',
+          '<strong>Disciplined Legacy Migration:</strong> Deprecated overlapping legacy alert systems with 3 months’ advance notice and phased batch rollouts to protect trust.'
+        ],
+        channelTag: 'myFT Smart Digest Email'
+      },
+      4: {
+        badge: 'STAGE 04 • ACTION & COMPOUNDING LOOP',
+        badgeColor: 'bg-rose-50 text-ft-claret',
+        title: 'Open Alert & Read Article',
+        subtitle: 'Closing the offsite-to-onsite loop to compound subscriber RFV.',
+        metricValue: '6x Article Reads & +86% RFV Lift',
+        metricDesc: 'Offsite myFT alerts referred 6x more article reads than onsite sources, and "Mix" habit subscribers achieved an +86% engagement uplift vs. control.',
+        bullets: [
+          '<strong>High-Intent Re-Entry:</strong> Every alert click lands the subscriber directly inside a full FT article page—seamlessly transitioning them from offsite trigger back to onsite immersion.',
+          '<strong>The Reinforcing Loop (Stage 4 → 1):</strong> While reading the alert-referred article, the subscriber encounters new topic tags and clicks <code>+ Follow</code> again, widening their loop.',
+          '<strong>North Star Impact:</strong> Moving subscribers from single-channel usage into the dual Onsite + Offsite "Mix" habit drove the strongest gains in Recency, Frequency, and Volume (RFV).'
+        ],
+        channelTag: 'Offsite → Onsite Loop'
+      }
+    };
+
+    // SVG coordinates for the traveling simulation dot across stages 1 -> 2 -> 3 -> 4
+    const packetCoordinates = {
+      1: { x: 155, y: 125, color: '#0D7680' },
+      2: { x: 445, y: 125, color: '#0F5499' },
+      3: { x: 445, y: 395, color: '#D97706' },
+      4: { x: 155, y: 395, color: '#990F3D' }
+    };
+
+    // =========================================================================
+    // 2. RENDER & INTERACTION CONTROLLERS
+    // =========================================================================
+    function selectStage(stageNum) {
+      state.activeStage = stageNum;
+      const data = stageDetails[stageNum];
+
+      // Update Stage Card Active Styling
+      [1, 2, 3, 4].forEach(num => {
+        const card = document.getElementById(`card-stage-${num}`);
+        if (num === stageNum) {
+          card.classList.add('active');
+        } else {
+          card.classList.remove('active');
+        }
+      });
+
+      // Update SVG Connector Highlights
+      updateSvgConnectors();
+
+      // Update Right-Hand Strategy Inspector
+      const badge = document.getElementById('detailBadge');
+      badge.className = `inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-mono font-semibold ${data.badgeColor}`;
+      badge.textContent = data.badge;
+
+      document.getElementById('detailTitle').textContent = data.title;
+      document.getElementById('detailSubtitle').textContent = data.subtitle;
+      document.getElementById('detailMetricValue').textContent = data.metricValue;
+      document.getElementById('detailMetricDesc').textContent = data.metricDesc;
+      document.getElementById('previewChannelTag').textContent = data.channelTag;
+      document.getElementById('simStatusText').textContent = state.isSimulating
+        ? `Simulating Loop • Stage ${stageNum} of 4`
+        : `Viewing Stage ${stageNum} of 4`;
+
+      // Populate Strategy Bullets
+      const bulletsEl = document.getElementById('detailBullets');
+      bulletsEl.innerHTML = data.bullets.map(item => `
+        <li class="flex items-start gap-2.5">
+          <span class="w-1.5 h-1.5 rounded-full bg-ft-claret mt-2 shrink-0"></span>
+          <span class="leading-relaxed">${item}</span>
+        </li>
+      `).join('');
+
+      // Render Live FT Touchpoint Mockup
+      renderLivePreview(stageNum);
+    }
+
+    function updateSvgConnectors() {
+      const pathMap = {
+        1: 'path-1-2',
+        2: 'path-2-3',
+        3: 'path-3-4',
+        4: 'path-4-1'
+      };
+
+      const allowedPaths = cohortData[state.cohort].activePaths;
+
+      Object.entries(pathMap).forEach(([stageStr, pathId]) => {
+        const pathEl = document.getElementById(pathId);
+        const stageNum = Number(stageStr);
+        const isAllowed = allowedPaths.includes(pathId);
+        const isCurrentOutgoing = stageNum === state.activeStage;
+
+        if (!isAllowed) {
+          pathEl.setAttribute('stroke', '#E6D9CE');
+          pathEl.setAttribute('stroke-width', '1.5');
+          pathEl.classList.remove('loop-path-active');
+          pathEl.setAttribute('marker-end', 'url(#arrow-muted)');
+        } else if (isCurrentOutgoing) {
+          const activeColor = stageNum === 4 ? '#990F3D' : '#0D7680';
+          const activeMarker = stageNum === 4 ? 'url(#arrow-claret)' : 'url(#arrow-active)';
+          pathEl.setAttribute('stroke', activeColor);
+          pathEl.setAttribute('stroke-width', '3.2');
+          pathEl.classList.add('loop-path-active');
+          pathEl.setAttribute('marker-end', activeMarker);
+        } else {
+          pathEl.setAttribute('stroke', stageNum === 4 ? '#990F3D' : '#8C7A6B');
+          pathEl.setAttribute('stroke-width', '2.2');
+          pathEl.classList.remove('loop-path-active');
+          pathEl.setAttribute('marker-end', stageNum === 4 ? 'url(#arrow-claret)' : 'url(#arrow-muted)');
+        }
+      });
+
+      // Move Simulation Packet Dot
+      const packetGroup = document.getElementById('simPacket');
+      const coords = packetCoordinates[state.activeStage];
+      if (state.isSimulating) {
+        packetGroup.classList.remove('hidden');
+        document.getElementById('simPacketOuter').setAttribute('cx', coords.x);
+        document.getElementById('simPacketOuter').setAttribute('cy', coords.y);
+        document.getElementById('simPacketOuter').setAttribute('fill', coords.color);
+        document.getElementById('simPacketInner').setAttribute('cx', coords.x);
+        document.getElementById('simPacketInner').setAttribute('cy', coords.y);
+        document.getElementById('simPacketInner').setAttribute('fill', coords.color);
+      } else {
+        packetGroup.classList.add('hidden');
+      }
+    }
+
+    function renderLivePreview(stageNum) {
+      const container = document.getElementById('livePreviewContainer');
+      const topic = state.selectedTopic;
+
+      if (stageNum === 1) {
+        container.innerHTML = `
+          <div class="border-l-2 border-ft-claret pl-3">
+            <div class="flex items-center justify-between gap-2">
+              <span class="text-[11px] font-mono uppercase tracking-wider text-ft-claret font-bold">${topic}</span>
+              <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-ft-teal text-white text-xs font-semibold shadow-xs">
+                ✓ Following
+              </span>
+            </div>
+            <h4 class="font-serif text-base font-bold text-ft-ink mt-1.5 leading-snug">
+              Markets reassess rate trajectory as ${topic.toLowerCase()} pressures persist
+            </h4>
+            <p class="text-xs text-ft-muted mt-1">
+              By FT Markets Desk • 4 min read
+            </p>
+            <div class="mt-3 pt-2.5 border-t border-gray-100 flex items-center justify-between text-[11px] text-ft-teal font-medium">
+              <span>⚡ Event-triggered welcome alert queued</span>
+              <span class="font-mono">+102% uCTR</span>
+            </div>
+          </div>
+        `;
+      } else if (stageNum === 2) {
+        container.innerHTML = `
+          <div>
+            <div class="flex items-center justify-between pb-2 mb-2.5 border-b border-gray-100">
+              <span class="font-serif font-bold text-sm text-ft-ink">myFT Feed • <span class="text-ft-oxford">${topic}</span></span>
+              <span class="text-[10px] font-mono bg-ft-paper px-2 py-0.5 rounded text-ft-ink">Updated 6m ago</span>
+            </div>
+            <div class="space-y-2.5">
+              <div class="p-2.5 rounded-lg bg-ft-paper/60 border border-ft-border/60">
+                <div class="text-[10px] font-mono uppercase text-ft-claret font-semibold">FT Curated Collection</div>
+                <div class="text-xs font-semibold text-ft-ink mt-0.5">Essential Briefing: Navigating ${topic} in 2026</div>
+              </div>
+              <div class="p-2.5 rounded-lg bg-gray-50 border border-gray-100">
+                <div class="text-[10px] font-mono uppercase text-ft-muted">Latest Analysis</div>
+                <div class="text-xs font-semibold text-ft-ink mt-0.5">How institutional investors are hedging ${topic.toLowerCase()} exposure</div>
+              </div>
+            </div>
+          </div>
+        `;
+      } else if (stageNum === 3) {
+        container.innerHTML = `
+          <div>
+            <div class="flex items-center justify-between text-[11px] text-ft-muted pb-2 mb-2 border-b border-gray-100">
+              <span><strong>From:</strong> myFT Alerts &lt;myft@ft.com&gt;</span>
+              <span class="font-mono text-amber-700 bg-amber-50 px-1.5 py-0.5 rounded">07:15 AM (Peak Open)</span>
+            </div>
+            <div class="text-xs font-bold text-ft-ink mb-1">
+              Your myFT Daily Digest: 3 new stories on ${topic}
+            </div>
+            <p class="text-xs text-ft-muted leading-relaxed mb-3">
+              Curated based on your followed topics and delivered at your optimal morning reading window.
+            </p>
+            <button onclick="selectStage(4)" class="w-full py-2 px-3 rounded-lg bg-ft-claret hover:bg-ft-claretDark text-white text-xs font-semibold transition cursor-pointer">
+              Open Briefing &amp; Read Full Story →
+            </button>
+          </div>
+        `;
+      } else if (stageNum === 4) {
+        container.innerHTML = `
+          <div>
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-[10px] font-mono uppercase px-2 py-0.5 rounded bg-rose-50 text-ft-claret font-semibold">
+                Referred via myFT Alert (6x Channel)
+              </span>
+              <span class="text-[11px] font-mono text-ft-teal font-semibold">Mix Habit Active</span>
+            </div>
+            <p class="text-xs text-ft-ink leading-relaxed mb-2.5">
+              Subscriber lands back on FT.com from email alert. Related topic chips appear below the article, prompting a second follow:
+            </p>
+            <div class="flex flex-wrap items-center gap-1.5">
+              <span class="px-2.5 py-1 rounded-full bg-ft-teal/10 text-ft-teal text-[11px] font-semibold">✓ ${topic}</span>
+              <button onclick="selectStage(1)" class="px-2.5 py-1 rounded-full bg-ft-paper hover:bg-ft-teal hover:text-white border border-ft-borderStrong text-ft-ink text-[11px] font-semibold transition cursor-pointer">
+                + Follow Related: Sovereign Debt ↻
+              </button>
+            </div>
+          </div>
+        `;
+      }
+    }
+
+    // =========================================================================
+    // 3. COHORT, TOPIC & SIMULATION CONTROLS
+    // =========================================================================
+    function setCohort(cohortKey) {
+      state.cohort = cohortKey;
+
+      // Update button styles
+      ['mix', 'offsite', 'onsite'].forEach(key => {
+        const btn = document.getElementById(`cohort-${key}`);
+        if (key === cohortKey) {
+          btn.className = 'cohort-btn px-3 py-1.5 rounded-lg text-xs font-semibold transition cursor-pointer bg-ft-ink text-white shadow-sm';
+        } else {
+          btn.className = 'cohort-btn px-3 py-1.5 rounded-lg text-xs font-semibold transition cursor-pointer text-ft-muted hover:text-ft-ink';
+        }
+      });
+
+      document.getElementById('cohortDescription').innerHTML = cohortData[cohortKey].description;
+      document.getElementById('cohortRfvBadge').textContent = cohortData[cohortKey].badge;
+      updateSvgConnectors();
+    }
+
+    function selectTopic(topicName) {
+      state.selectedTopic = topicName;
+      document.getElementById('cardTopicLabel').textContent = topicName;
+
+      // Update topic pills
+      document.querySelectorAll('.topic-pill').forEach(btn => {
+        const isSelected = btn.getAttribute('data-topic') === topicName;
+        if (isSelected) {
+          btn.className = 'topic-pill px-3 py-1 rounded-full text-xs font-medium border transition cursor-pointer bg-ft-teal text-white border-ft-teal';
+          btn.textContent = `✓ ${topicName}`;
+        } else {
+          const label = btn.getAttribute('data-topic');
+          btn.className = 'topic-pill px-3 py-1 rounded-full text-xs font-medium border transition cursor-pointer bg-white text-ft-ink border-ft-borderStrong hover:border-ft-teal';
+          btn.textContent = `+ ${label}`;
+        }
+      });
+
+      renderLivePreview(state.activeStage);
+    }
+
+    function stepStage(delta) {
+      let next = state.activeStage + delta;
+      if (next > 4) next = 1;
+      if (next < 1) next = 4;
+      selectStage(next);
+    }
+
+    function toggleSimulation() {
+      state.isSimulating = !state.isSimulating;
+      const playIcon = document.getElementById('simIconPlay');
+      const pauseIcon = document.getElementById('simIconPause');
+      const label = document.getElementById('simBtnLabel');
+
+      if (state.isSimulating) {
+        playIcon.classList.add('hidden');
+        pauseIcon.classList.remove('hidden');
+        label.textContent = 'Pause Loop';
+        updateSvgConnectors();
+
+        state.simTimer = setInterval(() => {
+          stepStage(1);
+        }, 2400);
+      } else {
+        playIcon.classList.remove('hidden');
+        pauseIcon.classList.add('hidden');
+        label.textContent = 'Simulate Loop';
+        clearInterval(state.simTimer);
+        state.simTimer = null;
+        updateSvgConnectors();
+        document.getElementById('simStatusText').textContent = `Viewing Stage ${state.activeStage} of 4`;
+      }
+    }
+
+    // =========================================================================
+    // 4. MODAL & CLIPBOARD UTILITIES
+    // =========================================================================
+    function toggleShareModal(show) {
+      const modal = document.getElementById('shareModal');
+      if (show) {
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+      } else {
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+      }
+    }
+
+    function copyReadmeSnippet() {
+      const textarea = document.getElementById('readmeSnippet');
+      textarea.select();
+      textarea.setSelectionRange(0, 99999);
+      try {
+        document.execCommand('copy');
+        const btn = document.getElementById('copyBtn');
+        btn.textContent = 'Copied ✓';
+        setTimeout(() => { btn.textContent = 'Copy Markdown'; }, 2000);
+      } catch (err) {
+        console.error('Copy failed', err);
+      }
+    }
+
+    // =========================================================================
+    // 5. KEYBOARD SHORTCUTS & INITIALIZATION
+    // =========================================================================
+    document.addEventListener('keydown', (e) => {
+      if (e.target.tagName === 'TEXTAREA' || e.target.tagName === 'INPUT') return;
+      if (e.key === 'ArrowRight') {
+        stepStage(1);
+      } else if (e.key === 'ArrowLeft') {
+        stepStage(-1);
+      } else if (e.key === ' ') {
+        e.preventDefault();
+        toggleSimulation();
+      } else if (e.key === 'Escape') {
+        toggleShareModal(false);
+      }
+    });
+
+    window.addEventListener('DOMContentLoaded', () => {
+      selectStage(1);
+    });
+  </script>
+</body>
+</html>
