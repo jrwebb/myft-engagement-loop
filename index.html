@@ -187,60 +187,6 @@
   <!-- Main Interactive Workspace -->
   <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 lg:py-8">
 
-    <!-- Habit Cohort & Topic Selector Bar -->
-    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6 p-4 rounded-2xl bg-ft-card border border-ft-border shadow-sm">
-      <!-- Cohort Mode Switcher -->
-      <div class="flex flex-wrap items-center gap-2">
-        <span class="text-xs font-mono uppercase tracking-wider text-ft-muted font-semibold mr-1">Subscriber Habit Cohort:</span>
-        <div class="inline-flex rounded-xl bg-ft-paper p-1 border border-ft-border" role="group">
-          <button onclick="setCohort('mix')" id="cohort-mix"
-            class="cohort-btn px-3 py-1.5 rounded-lg text-xs font-semibold transition cursor-pointer bg-ft-ink text-white shadow-sm">
-            Mix habit (onsite + offsite)
-          </button>
-          <button onclick="setCohort('offsite')" id="cohort-offsite"
-            class="cohort-btn px-3 py-1.5 rounded-lg text-xs font-semibold transition cursor-pointer text-ft-muted hover:text-ft-ink">
-            Offsite alerts only
-          </button>
-          <button onclick="setCohort('onsite')" id="cohort-onsite"
-            class="cohort-btn px-3 py-1.5 rounded-lg text-xs font-semibold transition cursor-pointer text-ft-muted hover:text-ft-ink">
-            Onsite hub Only
-          </button>
-        </div>
-      </div>
-
-      <!-- Interactive Topic Follow Sandbox -->
-      <div class="flex flex-wrap items-center gap-2">
-        <span class="text-xs font-mono uppercase tracking-wider text-ft-muted font-semibold">Test Topic:</span>
-        <div class="flex flex-wrap gap-1.5" id="topicPills">
-          <button onclick="selectTopic('Global Inflation')" data-topic="Global Inflation"
-            class="topic-pill px-3 py-1 rounded-full text-xs font-medium border transition cursor-pointer bg-ft-teal text-white border-ft-teal">
-            ✓ Global Inflation
-          </button>
-          <button onclick="selectTopic('Artificial Intelligence')" data-topic="Artificial Intelligence"
-            class="topic-pill px-3 py-1 rounded-full text-xs font-medium border transition cursor-pointer bg-white text-ft-ink border-ft-borderStrong hover:border-ft-teal">
-            + Artificial Intelligence
-          </button>
-          <button onclick="selectTopic('Central Banks')" data-topic="Central Banks"
-            class="topic-pill px-3 py-1 rounded-full text-xs font-medium border transition cursor-pointer bg-white text-ft-ink border-ft-borderStrong hover:border-ft-teal">
-            + Central Banks
-          </button>
-        </div>
-      </div>
-    </div>
-
-    <!-- Cohort Insight Banner -->
-    <div id="cohortBanner" class="mb-6 px-4 py-3 rounded-xl bg-ft-tealLight border border-ft-teal/30 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-sm">
-      <div class="flex items-start sm:items-center gap-2.5">
-        <span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-ft-teal text-white font-mono text-xs font-bold shrink-0 mt-0.5 sm:mt-0">★</span>
-        <p id="cohortDescription" class="text-ft-ink">
-          <strong>"Mix" Habit Loop (Highest Median RFV):</strong> Subscribers discover and follow topics on article pages (Onsite), receive event-triggered alerts when news breaks (Offsite), and click back into FT articles where they follow adjacent topics - compounding engagement.
-        </p>
-      </div>
-      <span id="cohortRfvBadge" class="font-mono text-xs font-semibold px-2.5 py-1 rounded-md bg-white text-ft-teal border border-ft-teal/30 shrink-0 self-start sm:self-center">
-        Median RFV: Peak (1.0x Benchmark)
-      </span>
-    </div>
-
     <!-- 12-Column Grid: Left 7 Cols = Interactive 4-Stage Habit Loop Diagram; Right 5 Cols = Deep Strategy & Live Preview -->
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
 
@@ -813,46 +759,8 @@
     }
 
     // =========================================================================
-    // 3. COHORT, TOPIC & SIMULATION CONTROLS
+    // 3. SIMULATION CONTROLS
     // =========================================================================
-    function setCohort(cohortKey) {
-      state.cohort = cohortKey;
-
-      // Update button styles
-      ['mix', 'offsite', 'onsite'].forEach(key => {
-        const btn = document.getElementById(`cohort-${key}`);
-        if (key === cohortKey) {
-          btn.className = 'cohort-btn px-3 py-1.5 rounded-lg text-xs font-semibold transition cursor-pointer bg-ft-ink text-white shadow-sm';
-        } else {
-          btn.className = 'cohort-btn px-3 py-1.5 rounded-lg text-xs font-semibold transition cursor-pointer text-ft-muted hover:text-ft-ink';
-        }
-      });
-
-      document.getElementById('cohortDescription').innerHTML = cohortData[cohortKey].description;
-      document.getElementById('cohortRfvBadge').textContent = cohortData[cohortKey].badge;
-      updateSvgConnectors();
-    }
-
-    function selectTopic(topicName) {
-      state.selectedTopic = topicName;
-      document.getElementById('cardTopicLabel').textContent = topicName;
-
-      // Update topic pills
-      document.querySelectorAll('.topic-pill').forEach(btn => {
-        const isSelected = btn.getAttribute('data-topic') === topicName;
-        if (isSelected) {
-          btn.className = 'topic-pill px-3 py-1 rounded-full text-xs font-medium border transition cursor-pointer bg-ft-teal text-white border-ft-teal';
-          btn.textContent = `✓ ${topicName}`;
-        } else {
-          const label = btn.getAttribute('data-topic');
-          btn.className = 'topic-pill px-3 py-1 rounded-full text-xs font-medium border transition cursor-pointer bg-white text-ft-ink border-ft-borderStrong hover:border-ft-teal';
-          btn.textContent = `+ ${label}`;
-        }
-      });
-
-      renderLivePreview(state.activeStage);
-    }
-
     function stepStage(delta) {
       let next = state.activeStage + delta;
       if (next > 4) next = 1;
